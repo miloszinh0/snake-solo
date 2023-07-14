@@ -67,9 +67,7 @@ class Game:
                 self.run = False
             else:
                 self.board[self.next_head_pos[0], self.next_head_pos[1]] = 1
-
-
-        
+        return self.board
 
     def printboard(self):
         print(self.board)
@@ -79,30 +77,28 @@ class Game:
 
     def console_anim(self):
         self.run = True
-        # self.random_apple()
-        self.board[5,2] = -1
+        self.random_apple()
+    
         while self.run:
             self.printboard()
             self.update()
-            print("Points: {}".format(self.points))
-            time.sleep(1)
+            self.plot_anim()
+            
     
         self.GameOver()
 
     def plot_anim(self):
-        fig, ax = plt.subplots()
-        ax.set_xlim(0, self.length)
-        ax.set_ylim(0, self.length)
-        x = np.linspace(0, self.length, self.length)
-        y = np.linspace(0, self.length, self.length)
-        c = ax.pcolormesh(x, y, self.board)
-        ani = animation.FuncAnimation(fig, self.update, fargs=(ax, self.board) ,interval=1000)
+        fig = plt.figure()
+        ax = fig.add_subplot(1, 1, 1)
+        fig.clear()
+        ax = ax.pcolormesh(self.board)
         plt.show()
+        time.sleep(1)
         
 
 
 game = Game(10)
-game.console_anim()
+game.plot_anim()
         
     # def display(self):
     #     self.fig = plt.figure()
