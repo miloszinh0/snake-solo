@@ -17,23 +17,30 @@ RED = (204, 0, 0)
 GAMEOVER_FONT = pygame.font.SysFont('comicsans', 150)
 SCORE_FONT = pygame.font.SysFont('comicsans', 50)
 
-
-
 class Snake:
     def __init__(self, board_size):
+
         self.board_size = board_size
         self.board = [[0 for _ in range(board_size)] for _ in range(board_size)]
+
         self.head = 1
         self.length = 2
         self.apple = -1
+        
+        
         self.board[round(board_size/4)][round(board_size/4)] = self.head
-        self.head_pos = [round(board_size/4), round(board_size/4)]
         self.board[round(board_size/4)-1][round(board_size/4)] = 2
-        self.board[round(board_size/2)][round(board_size/2)] = -1
+        self.board[round(board_size/2)][round(board_size/2)] = self.apple
+
+        self.head_pos = [round(board_size/4), round(board_size/4)]
         self.apple_pos = [round(board_size/2), round(board_size/2)]
+
         self.direction = 3
+
         self.score = 0
+
         self.apple_eaten = False
+
         self.gameover = False
 
     def move(self):
@@ -60,7 +67,7 @@ class Snake:
         self.next_head_pos = [self.head_pos[0] + self.next_move[0], self.head_pos[1] + self.next_move[1]]
         print(self.next_head_pos)
         if 0 <= self.next_head_pos[0] < self.board_size and 0 <= self.next_head_pos[1] < self.board_size:
-            if self.board[self.next_head_pos[0]][self.next_head_pos[1]] > 0:
+            if self.length > self.board[self.next_head_pos[0]][self.next_head_pos[1]] > 0:
                 self.GameOver()
         else:
             self.GameOver()
@@ -90,30 +97,16 @@ class Snake:
         self.gameover = True
         print("GameOver")
 
-    def restart(self):
-        self.board_size = board_size
-        self.board = [[0 for _ in range(board_size)] for _ in range(board_size)]
-        self.head = 1
-        self.length = 2
-        self.apple = -1
-        self.board[round(board_size/4)][round(board_size/4)] = self.head
-        self.head_pos = [round(board_size/4), round(board_size/4)]
-        self.board[round(board_size/4)-1][round(board_size/4)] = 2
-        self.board[round(board_size/2)][round(board_size/2)] = -1
-        self.apple_pos = [round(board_size/2), round(board_size/2)]
-        self.direction = 3
-        self.score = 0
-        self.apple_eaten = False
-        self.gameover = False
-        
 class Game:
     def __init__(self, snake):
+
         self.snake = snake
+
         self.game_size = 800
         self.window_size = 1000
+
         self.WIN = pygame.display.set_mode((self.window_size, self.window_size))
         pygame.display.set_caption("Snake Game")
-
         self.FPS = 60
 
 
@@ -139,10 +132,10 @@ class Game:
         draw_text = GAMEOVER_FONT.render("GAME OVER", 1, RED)
         self.WIN.blit(draw_text, (self.window_size//2-draw_text.get_width()/2, self.window_size//2-draw_text.get_height()/2))
         pygame.display.update()
-        pygame.time.delay(5000)
+        pygame.time.delay(2000)
 
 def main():
-    snake = Snake(15)
+    snake = Snake(16)
     game = Game(snake)
     clock = pygame.time.Clock()
     run = True
